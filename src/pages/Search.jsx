@@ -1,16 +1,16 @@
 import { useSearchParams } from "react-router";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-// VITE가 불러들여준 환경 변수를 꺼낼 때는 function 밖에서
+// VITE가 불러들여준 환경변수를 꺼낼 때는 function 밖에서
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 function Search() {
-    //Search 컴포넌트가 뜨는 상황은
+    // Search 컴포넌트가 뜨는 상황은
     // 사용자가 Home에서 뭔가 keyword를 입력했고, 그걸 Home 컴포넌트는
-    // 쿼리스트링 keyword=ㄹㄴㅁㄹㄴㅇ 담아서 전달해준 상황
+    // 쿼리스트링 keyword=ㄹㄴㅁㅇㄹ 담아서 전달해준 상황
 
-    // 1. 쿼리스트링 keyword = 어쩌구 에서 '어쩌구'를 가져와서
+    // 1. 쿼리스트링 keyword=어쩌구 에서 '어쩌구'를 가져와서
 
     // 3. 그걸 화면에 출력
 
@@ -19,56 +19,43 @@ function Search() {
     const keyword = searchParams.get("keyword");
 
     // 동적 라우팅을 통한 params와 searchParams의 큰 차이
-    // params는 무조건 있음. searchParams는 있을 수도 있고, 없을 수도 있음.
+    // params는 무조건 있음. searchParams는 있을 수도 있고 없을 수도 있음.
 
-    // 1. /search               =>  keyword의 타입 : null
-    // 2. /search?a=10          =>                : null
-    // 3. /search?keyword       =>                : ""
-    // 4. /search?keyword=Math  =>                : "Math"
+    // 1. /search                =>  keyword의 타입 : null
+    // 2. /search?a=10           =>                : null
+    // 3. /search?keyword=       =>                : ""
+    // 4. /search?keyword=Math   =>                : "Math"
 
-    // 2. 백엔드에게 '어쩌구'를 이용하여  결과를 달라고 해서 , 받아서 , 가공해서 저장
+    // 2. 백엔드에게 keyword를 이용하여 결과를 달라고 해서, 받아서, 가공해서, 저장
 
     const [list, setList] = useState([]);
 
-    // GOOGLE BOOKS API를 사용할 건데
+    // Google Books API를 사용할 건데
     // 누구나 사용할 수 있게 공개 API가 아님. 기존에 등록해둔 개발자만 사용할 수 있음
-    // 그렇게 등록을 하면 Token을 줌 ( 깃헙과 같은 경우임)
+    // 그렇게 등록을 하면 Token을 줌    (깃헙과 같은 경우임)
     // 요청을 보낼 때 토큰을 요청에 담아서 보내야 함
 
-
-    // Token은 " 내 신분증 "
+    // Token은 "내 신분증"
     // 외부에 노출될 가능성이 100%
-    // Token이나, 비밀번호 같은 민감한 정보는 코드에 포함시켜서는 안됨. 절대로
-    // => 이러한 민감한 정보를 코드 상에 사용하지 않도록 존재하는 장치 => " 환경변수 "
+    // Token이나, 비밀번호 같은 민감한 정보는 코드에 포함시켜서는 안됨. 절대로.
+    // => 이러한 민감한 정보를 코드 상에 사용하지 않도록 존재하는 장치 => "환경변수"
 
     useEffect(() => {
         // keyword라는 변수에 null (타입)으로 나타나는데
-        // 이걸 템프릿 리터럴을 통해 string안에 값을 찍었더니 진짜로 string안에 "null"이 찍힘, undefined도 마찬가지
+        // 이걸 템플릿 리터럴을 통해 string 안에 값을 찍었더니 진짜로 string인 "null"이 찍힘, undefined도 마찬가지
 
-        // 근본적으로 생각하면 keyword 가 string이 없으면 (빈 문자열도 포함) 요청을 보내면 안됨
-        if(!keyword) return;
+        // 근본적으로 생각하면 keyword가 string이 없으면 (빈 문자열도 포함) 요청을 보내면 안됨
+        if (!keyword) return;
 
         fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${Keyword}&maxResults=20&key=${API_KEY}`,
+            `https://www.googleapis.com/books/v1/volumes?q=${keyword}&maxResults=20&key=${API_KEY}`,
         )
             .then(res => res.json())
             .then(json => setList(json.items))
-            .catch(err => consloe.log(err));
-    },[]);
-
-    // Search 이 컴포넌트는 사용자가 요청한 검색 결과를 보여주기 위해서 존재
-    //          백엔드에게 데이터를 받아와서 화면에 출력하는일
-    //          사용자가 요청한 키워드를 알아야됨
-
-    // 요청을 한다는건, 백엔드의 자원을 소비
-    //                      수천만개의 데이터중, 요청에서 원하는 내용만 응답
-    //                      데이터베이스에서 select를 통해 원하는 정보만 검색해야함
-    //                      => 컴퓨터가 일을 한다는것 => 리소스 소비
-    // 리소스가 낭비 되지 않도록 인증된 사용자만 API를 사용할 수 있도록 장치
-
+            .catch(err => console.log(err));
+    }, []);
 
     return <></>;
 }
 
 export default Search;
-
