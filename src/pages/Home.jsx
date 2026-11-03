@@ -12,7 +12,7 @@ function Home() {
         event.preventDefault();
         const k = keyword.trim();
         if (!k) return;
-1
+
         // 이 입력된 keyword를 가지고 /search 주소로 이동시켜줘야 함
         // 함수(기능) 동작 중에 "이동"을 포함시키기 위해서는
         // useNavigate() 사용해줘야 되는데,
