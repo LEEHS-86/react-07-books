@@ -42,9 +42,18 @@ function Search() {
     // => 이러한 민감한 정보를 코드 상에 사용하지 않도록 존재하는 장치 => " 환경변수 "
 
     useEffect(() => {
+        // keyword라는 변수에 null (타입)으로 나타나는데
+        // 이걸 템프릿 리터럴을 통해 string안에 값을 찍었더니 진짜로 string안에 "null"이 찍힘, undefined도 마찬가지
+
+        // 근본적으로 생각하면 keyword 가 string이 없으면 (빈 문자열도 포함) 요청을 보내면 안됨
+        if(!keyword) return;
+
         fetch(
-            'https://www.googleapis.com/books/v1/volumes?q=${keyword}&maxResults=20&key=${API_KEY}',
-        );
+            `https://www.googleapis.com/books/v1/volumes?q=${Keyword}&maxResults=20&key=${API_KEY}`,
+        )
+            .then(res => res.json())
+            .then(json => setList(json.items))
+            .catch(err => consloe.log(err));
     },[]);
 
     // Search 이 컴포넌트는 사용자가 요청한 검색 결과를 보여주기 위해서 존재
