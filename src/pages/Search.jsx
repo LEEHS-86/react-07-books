@@ -4,7 +4,7 @@ import styles from "./Search.module.css";
 
 // VITE가 불러들여준 환경변수를 꺼낼 때는 function 밖에서
 
-const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+export const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 function Search() {
     const [searchParams] = useSearchParams(); // 변형된 state임
