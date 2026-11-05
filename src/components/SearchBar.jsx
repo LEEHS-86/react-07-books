@@ -2,15 +2,15 @@ import styles from "./SearchBar.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-function SearchBar() {
+function SearchBar({ keyword }) {
     const navigate = useNavigate();
-    const [keyword, setKeyword] = useState("");
+    const [input, setInput] = useState(keyword || "");
 
-    const onChangeHandler = event => setKeyword(event.target.value);
+    const onChangeHandler = event => setInput(event.target.value);
 
     const onSubmitHandler = event => {
         event.preventDefault();
-        const k = keyword.trim();
+        const k = input.trim();
         if (!k) return;
 
         navigate(`/search?keyword=${encodeURIComponent(k)}`);
@@ -18,7 +18,7 @@ function SearchBar() {
 
     return (
         <form className={styles.form} onSubmit={onSubmitHandler}>
-            <input className={styles.input} onChange={onChangeHandler} value={keyword} />
+            <input className={styles.input} onChange={onChangeHandler} value={input} />
             <button className={styles.button} type={"submit"}>
                 검색
             </button>
