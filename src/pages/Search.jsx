@@ -10,7 +10,7 @@ import SearchBar from "../components/SearchBar.jsx";
 // 그걸 export(수출) 시켜서 다른 파일에서 import(수입)해 사용하도록 하는게
 // 자원관리 상 유리 + 코드를 여러 번 다시 쓸 필요 없음
 
-export const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+export const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
 // export default  => 파일 하나에 유일하게 1개만 "대표 수출품"으로 지정 가능
 //                    import 때 import Search from "./Search.jsx" 처럼,
@@ -40,7 +40,7 @@ function Search() {
             `https://www.googleapis.com/books/v1/volumes?q=${keyword}&maxResults=20&key=${API_KEY}`,
         )
             .then(res => res.json())
-            .then(json => setList(json.items))
+            .then(json => setList(json.itemes ?? []))
             .catch(err => console.log(err))
             .finally(() => setLoading(false));
     }, [keyword]);
