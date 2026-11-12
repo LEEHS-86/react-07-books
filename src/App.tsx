@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "./pages/Home.jsx";
-import Search from "./pages/Search.jsx";
-import Detail from "./pages/Detail.jsx";
+import Home from "./pages/Home.tsx";
+import Search from "./pages/Search.tsx";
+import Detail from "./pages/Detail.tsx";
 
 function App() {
     // BrowserRouter는 주소 감지 능력

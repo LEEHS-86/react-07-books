@@ -1,14 +1,17 @@
 import styles from "./SearchBar.module.css";
-import { useState } from "react";
+import { type ChangeEvent, type SubmitEvent, useState } from "react";
 import { useNavigate } from "react-router";
 
-function SearchBar({ keyword }) {
+type Props = { keyword: string };
+
+function SearchBar({ keyword }: Props) {
     const navigate = useNavigate();
     const [input, setInput] = useState(keyword || "");
 
-    const onChangeHandler = event => setInput(event.target.value);
+    const onChangeHandler = (event: ChangeEvent<HTMLInputElement, HTMLInputElement>) =>
+        setInput(event.target.value);
 
-    const onSubmitHandler = event => {
+    const onSubmitHandler = (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
         const k = input.trim();
         if (!k) return;

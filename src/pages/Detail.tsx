@@ -1,30 +1,25 @@
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { API_KEY } from "./Search.jsx";
+import { API_KEY, type Book } from "./Search.tsx";
 import styles from "./Detail.module.css";
 
 function Detail() {
-    // 사용자에게 원하는 책의 상세를 출력
     const navigate = useNavigate();
-
-    // 사용자가 원하는 책은 무엇인가 => 책의 ID를 알아야되는구나
     const { id } = useParams();
-
-    // 백엔드에게 정보를 요청, 받아서, 가공, 저장, 출력
-    const [book, setBook] = useState(null);
+    const [book, setBook] = useState<Book | null>(null);
 
     useEffect(() => {
         fetch(`https://www.googleapis.com/books/v1/volumes/${id}?key=${API_KEY}`)
             .then(res => res.json())
-            .then(json => setBook(json))
-            .catch(err => console.log(err));
+            .then((json: Book) => setBook(json))
+            .catch((err: unknown) => {
+                if (err instanceof Error) {
+                    console.log(err.message);
+                } else {
+                    console.log(err);
+                }
+            });
     }, []);
-
-    // Search 컴포넌트에서는 list가 초기값도 [], 값이 도착해도 [], 값이 도착하지 않아도 []
-    // loading 상태를 사용자에게 보여주기 위해서는 따로 loading이라는 state를 세웠어야 됐었음
-
-    // Detail 컴포넌트에서는 book이 초기값이 null, 값이 도착하면 책 정보 객체, 값이 도착하지 않으면 null
-    // book의 값이 있는지 없는지만 체크해줘도 화면을 달리 그려줄 수 있음
 
     if (!book) {
         return <div className={styles.container}>Loading...</div>;
@@ -59,8 +54,11 @@ function Detail() {
                  - 이 속성을 사용할 때에는 주의가 필요함 => 필요하면 그냥 하는거
 
                  사용법 : dangerouslySetInnerHTML={{ __html: 내용 }}
+
+                 '__html'에서 오류
+                 Type string | undefined is not assignable to type string | TrustedHTML
              */}
-            <p dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }}></p>
+            <p dangerouslySetInnerHTML={{ __html: book.volumeInfo.description || "" }}></p>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import styles from "./Home.module.css";
-import SearchBar from "../components/SearchBar.jsx";
+import SearchBar from "../components/SearchBar.tsx";
 
 function Home() {
     return (
